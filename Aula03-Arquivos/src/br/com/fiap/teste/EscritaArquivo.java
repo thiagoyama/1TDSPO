@@ -1,5 +1,6 @@
 package br.com.fiap.teste;
 
+import javax.swing.*;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,20 +9,18 @@ import java.util.Scanner;
 public class EscritaArquivo {
 
     public static void main(String[] args) {
+
         try {
             //Abrir o arquivo em modo escrita
-            FileWriter outputStream = new FileWriter("churros2.txt");
+            FileWriter outputStream = new FileWriter("churros2.txt", true);
             PrintWriter writer = new PrintWriter(outputStream);
 
-            Scanner sc = new Scanner(System.in);
-
             System.out.println("Digite o sabor do churros");
-            String texto = sc.nextLine() + sc.next();
+            String texto = JOptionPane.showInputDialog("Digite o sabor");
             //Escrever no arquivo
             writer.println(texto);
 
             //Fechar os recursos
-            sc.close();
             outputStream.close();
             writer.close();
         }catch (IOException e){
