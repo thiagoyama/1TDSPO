@@ -12,7 +12,7 @@ public class RemoverDaoTest {
 
         try {
             //Chamar o método remover
-            dao.remover(2);
+            dao.remover(3);
             System.out.println("Carro removido!");
         } catch (Exception e) {
             System.err.println(e.getMessage());
