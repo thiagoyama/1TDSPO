@@ -16,3 +16,6 @@ create table t_concessionaria(
 create sequence sq_t_concessionaria INCREMENT by 1 START with 1 nocache;
 
 create sequence sq_t_carro INCREMENT by 1 START with 1 nocache;
+
+alter table t_carro add (fk_id_concessionaria number(10));
+alter table t_carro add foreign key (fk_id_concessionaria) references t_concessionaria(id_concessionaria);

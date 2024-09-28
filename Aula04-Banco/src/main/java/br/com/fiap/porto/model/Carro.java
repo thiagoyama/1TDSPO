@@ -8,6 +8,8 @@ public class Carro {
     private float motor;
     private boolean automatico;
 
+    private Concessionaria concessionaria;
+
     public Carro(String modelo, String placa, float motor, boolean automatico) {
         this.modelo = modelo;
         this.placa = placa;
