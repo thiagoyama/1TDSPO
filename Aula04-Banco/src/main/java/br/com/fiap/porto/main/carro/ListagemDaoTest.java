@@ -1,15 +1,17 @@
 package br.com.fiap.porto.main.carro;
 
 import br.com.fiap.porto.dao.CarroDao;
+import br.com.fiap.porto.factory.ConnectionFactory;
 import br.com.fiap.porto.model.Carro;
 import java.util.List;
 
 public class ListagemDaoTest {
 
     public static void main(String[] args) {
-        //Instanciar o DAO
-        CarroDao dao = new CarroDao();
+
         try {
+            //Instanciar o DAO
+            CarroDao dao = new CarroDao(ConnectionFactory.getConnection());
             //Chamar o método listar
             List<Carro> lista = dao.listar();
             //Exibir os dados pesquisados

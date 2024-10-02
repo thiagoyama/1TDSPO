@@ -66,4 +66,12 @@ public class Carro {
     public void setAutomatico(boolean automatico) {
         this.automatico = automatico;
     }
+
+    public Concessionaria getConcessionaria() {
+        return concessionaria;
+    }
+
+    public void setConcessionaria(Concessionaria concessionaria) {
+        this.concessionaria = concessionaria;
+    }
 }
