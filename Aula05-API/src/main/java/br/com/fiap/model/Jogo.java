@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class Jogo {
 
     private int id;
