@@ -36,7 +36,7 @@ public class JogoDaoTest {
             }
 
             // 3. Teste de Pesquisa por ID
-            Jogo jogoPesquisado = dao.pesquisarPorId(2); // Ajustar o ID conforme necessário
+            Jogo jogoPesquisado = dao.pesquisarPorId(3); // Ajustar o ID conforme necessário
             System.out.println("Jogo pesquisado: " + jogoPesquisado);
 
             // 4. Teste de Atualização

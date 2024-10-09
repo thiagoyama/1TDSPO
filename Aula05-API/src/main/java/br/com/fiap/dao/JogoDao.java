@@ -24,9 +24,14 @@ public class JogoDao {
     }
 
     public void cadastrar(Jogo jogo) throws SQLException {
-        PreparedStatement stmt = conexao.prepareStatement(INSERT_SQL);
+        PreparedStatement stmt = conexao.prepareStatement(INSERT_SQL,
+                new String[] {"id_jogo"});
         preencherStatementComJogo(stmt, jogo);
         stmt.executeUpdate();
+        //recuperar o id gerado pela sequence
+        ResultSet resultSet = stmt.getGeneratedKeys();
+        resultSet.next();
+        jogo.setId(resultSet.getInt(1));
     }
 
     public Jogo pesquisarPorId(int id) throws IdNaoEncontradoException, SQLException {
@@ -77,7 +82,8 @@ public class JogoDao {
         String nome = resultSet.getString("ds_nome");
         LocalDate dataLancamento = resultSet.getDate("dt_lancamento").toLocalDate();
         String classificacaoStr = resultSet.getString("ds_classificacao");
-        Classificacao classificacao = classificacaoStr != null ? Classificacao.valueOf(classificacaoStr) : null;
+        Classificacao classificacao = classificacaoStr != null ?
+                Classificacao.valueOf(classificacaoStr) : null;
 
         return new Jogo(id, nome, dataLancamento, classificacao);
     }
