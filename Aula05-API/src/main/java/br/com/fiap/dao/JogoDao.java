@@ -16,11 +16,23 @@ public class JogoDao {
     private static final String SELECT_ALL_SQL = "SELECT * FROM T_JOGO";
     private static final String UPDATE_SQL = "UPDATE T_JOGO SET ds_nome = ?, dt_lancamento = ?, ds_classificacao = ? WHERE id_jogo = ?";
     private static final String DELETE_SQL = "DELETE FROM T_JOGO WHERE id_jogo = ?";
+    private static final String SELECT_BY_NAME = "SELECT * FROM T_JOGO WHERE ds_nome like ?";
 
     private Connection conexao;
 
     public JogoDao(Connection conexao) {
         this.conexao = conexao;
+    }
+
+    public List<Jogo> listarPorNome(String nome) throws SQLException {
+        PreparedStatement stm = conexao.prepareStatement(SELECT_BY_NAME);
+        stm.setString(1, "%" + nome + "%");
+        ResultSet resultSet = stm.executeQuery();
+        List<Jogo> lista = new ArrayList<>();
+        while (resultSet.next()){
+            lista.add(parseJogo(resultSet));
+        }
+        return lista;
     }
 
     public void cadastrar(Jogo jogo) throws SQLException {

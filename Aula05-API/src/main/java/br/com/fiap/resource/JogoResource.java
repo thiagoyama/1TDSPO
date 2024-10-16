@@ -1,11 +1,14 @@
 package br.com.fiap.resource;
 
 import br.com.fiap.dao.JogoDao;
+import br.com.fiap.dto.jogo.CadastroJogoDto;
 import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.Jogo;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.modelmapper.ModelMapper;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,17 +19,26 @@ import java.util.List;
 public class JogoResource {
 
     private JogoDao jogoDao;
+    private ModelMapper modelMapper;
 
     public JogoResource() throws Exception {
         jogoDao = new JogoDao(ConnectionFactory.getConnection());
+        modelMapper = new ModelMapper();
     }
 
     @POST
-    public Response cadastrar(Jogo jogo, @Context UriInfo uriInfo) throws SQLException {
+    public Response cadastrar(CadastroJogoDto dto, @Context UriInfo uriInfo) throws SQLException {
+        Jogo jogo = modelMapper.map(dto, Jogo.class);
         jogoDao.cadastrar(jogo);
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
         builder.path(String.valueOf(jogo.getId())); //Constroi a URI para acessar o jogo cadastrado
         return Response.created(builder.build()).build();
+    }
+
+    @GET
+    @Path("pesquisa") //http://localhost:8080/jogos/pesquisa?nome=xxx
+    public List<Jogo> listaPorNome(@DefaultValue("") @QueryParam("nome") String nome) throws SQLException {
+        return jogoDao.listarPorNome(nome);
     }
 
     @GET
