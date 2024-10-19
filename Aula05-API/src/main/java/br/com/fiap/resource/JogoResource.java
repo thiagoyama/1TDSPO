@@ -1,16 +1,21 @@
 package br.com.fiap.resource;
 
 import br.com.fiap.dao.JogoDao;
+import br.com.fiap.dto.jogo.AtualizacaoJogoDto;
 import br.com.fiap.dto.jogo.CadastroJogoDto;
+import br.com.fiap.dto.jogo.DetalhesJogoDto;
 import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.factory.ConnectionFactory;
 import br.com.fiap.model.Jogo;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.modelmapper.ModelMapper;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //http://localhost:8080/jogos
 @Path("/jogos")
@@ -27,7 +32,7 @@ public class JogoResource {
     }
 
     @POST
-    public Response cadastrar(CadastroJogoDto dto, @Context UriInfo uriInfo) throws SQLException {
+    public Response cadastrar(@Valid CadastroJogoDto dto, @Context UriInfo uriInfo) throws SQLException {
         Jogo jogo = modelMapper.map(dto, Jogo.class);
         jogoDao.cadastrar(jogo);
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
@@ -37,24 +42,31 @@ public class JogoResource {
 
     @GET
     @Path("pesquisa") //http://localhost:8080/jogos/pesquisa?nome=xxx
-    public List<Jogo> listaPorNome(@DefaultValue("") @QueryParam("nome") String nome) throws SQLException {
-        return jogoDao.listarPorNome(nome);
+    public List<DetalhesJogoDto> listaPorNome(@DefaultValue("") @QueryParam("nome") String nome) throws SQLException {
+        return jogoDao.listarPorNome(nome).stream()
+                .map(j -> modelMapper.map(j, DetalhesJogoDto.class))
+                .collect(Collectors.toList());
     }
 
     @GET
-    public List<Jogo> listar() throws SQLException {
-        return jogoDao.listar();
+    public List<DetalhesJogoDto> listar() throws SQLException {
+        return jogoDao.listar().stream()
+                .map(j -> modelMapper.map(j, DetalhesJogoDto.class))
+                .collect(Collectors.toList());
     }
 
     @GET
     @Path("/{id}")
-    public Jogo pesquisar(@PathParam("id") int id) throws IdNaoEncontradoException, SQLException {
-        return jogoDao.pesquisarPorId(id);
+    public DetalhesJogoDto pesquisar(@PathParam("id") int id) throws IdNaoEncontradoException, SQLException {
+        Jogo jogo = jogoDao.pesquisarPorId(id);
+        DetalhesJogoDto dto = modelMapper.map(jogo, DetalhesJogoDto.class);
+        return dto;
     }
 
     @PUT
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") int id, Jogo jogo) throws IdNaoEncontradoException, SQLException {
+    public Response atualizar(@PathParam("id") int id, @Valid AtualizacaoJogoDto dto) throws IdNaoEncontradoException, SQLException {
+        Jogo jogo = modelMapper.map(dto, Jogo.class);
         //Setar o id no jogo
         jogo.setId(id);
         //Atualizar o jogo
@@ -72,16 +84,16 @@ public class JogoResource {
 
     @PATCH //Realizar a atualização parcial do objeto
     @Path("/{id}")
-    public Response atualizarParcial(@PathParam("id") int id, Jogo jogo) throws IdNaoEncontradoException, SQLException {
+    public Response atualizarParcial(@PathParam("id") int id, @Valid AtualizacaoJogoDto dto) throws IdNaoEncontradoException, SQLException {
         //Pesquisar o jogo no banco de dados
         Jogo jogoBanco = jogoDao.pesquisarPorId(id);
         //Verifica se existe valor no objeto recebido, eu seto o novo valor no objeto do banco
-        if (jogo.getNome() != null)
-            jogoBanco.setNome(jogo.getNome());
-        if (jogo.getClassificacao() != null)
-            jogoBanco.setClassificacao(jogo.getClassificacao());
-        if (jogo.getDataLancamento() != null)
-            jogoBanco.setDataLancamento(jogo.getDataLancamento());
+        if (dto.getNome() != null)
+            jogoBanco.setNome(dto.getNome());
+        if (dto.getClassificacao() != null)
+            jogoBanco.setClassificacao(dto.getClassificacao());
+        if (dto.getDataLancamento() != null)
+            jogoBanco.setDataLancamento(dto.getDataLancamento());
         jogoDao.atualizar(jogoBanco);
         return Response.ok().build();
     }

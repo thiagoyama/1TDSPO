@@ -16,7 +16,7 @@ public class JogoDao {
     private static final String SELECT_ALL_SQL = "SELECT * FROM T_JOGO";
     private static final String UPDATE_SQL = "UPDATE T_JOGO SET ds_nome = ?, dt_lancamento = ?, ds_classificacao = ? WHERE id_jogo = ?";
     private static final String DELETE_SQL = "DELETE FROM T_JOGO WHERE id_jogo = ?";
-    private static final String SELECT_BY_NAME = "SELECT * FROM T_JOGO WHERE ds_nome like ?";
+    private static final String SELECT_BY_NAME = "SELECT * FROM T_JOGO WHERE upper(ds_nome) like upper(?)";
 
     private Connection conexao;
 

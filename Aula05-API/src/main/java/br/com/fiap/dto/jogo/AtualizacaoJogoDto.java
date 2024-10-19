@@ -9,15 +9,14 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-//Define os dados utilizados para o cadastro
-@Setter @Getter
-public class CadastroJogoDto {
+@Getter @Setter
+public class AtualizacaoJogoDto {
 
-    @NotBlank //Não pode ser nulo ou vazio
-    @Size(max = 100) //Máximo de 100 caracteres
+    @NotBlank
+    @Size(max = 100)
     private String nome;
 
-    @Past //A data deve ser no passado
+    @Past
     private LocalDate dataLancamento;
 
     private Classificacao classificacao;
