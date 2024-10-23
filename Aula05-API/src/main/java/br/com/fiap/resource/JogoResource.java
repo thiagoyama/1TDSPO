@@ -57,7 +57,7 @@ public class JogoResource {
 
     @GET
     @Path("/{id}")
-    public DetalhesJogoDto pesquisar(@PathParam("id") int id) throws IdNaoEncontradoException, SQLException {
+    public DetalhesJogoDto pesquisar(@PathParam("id") int id) throws SQLException, IdNaoEncontradoException {
         Jogo jogo = jogoDao.pesquisarPorId(id);
         DetalhesJogoDto dto = modelMapper.map(jogo, DetalhesJogoDto.class);
         return dto;
