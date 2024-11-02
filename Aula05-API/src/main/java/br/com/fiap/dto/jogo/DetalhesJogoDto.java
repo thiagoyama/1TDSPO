@@ -1,6 +1,7 @@
 package br.com.fiap.dto.jogo;
 
 import br.com.fiap.model.Classificacao;
+import br.com.fiap.model.Desenvolvedora;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,8 +14,10 @@ public class DetalhesJogoDto {
 
     private String nome;
 
-    //private LocalDate dataLancamento;
+    private LocalDate dataLancamento;
 
     private Classificacao classificacao;
+
+    private Desenvolvedora desenvolvedora;
 
 }

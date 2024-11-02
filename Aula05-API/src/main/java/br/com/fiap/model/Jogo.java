@@ -19,4 +19,6 @@ public class Jogo {
 
     private Classificacao classificacao;
 
+    private Desenvolvedora desenvolvedora;
+
 }

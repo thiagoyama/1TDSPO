@@ -6,6 +6,7 @@ import br.com.fiap.dto.jogo.CadastroJogoDto;
 import br.com.fiap.dto.jogo.DetalhesJogoDto;
 import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.factory.ConnectionFactory;
+import br.com.fiap.model.Desenvolvedora;
 import br.com.fiap.model.Jogo;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -34,6 +35,9 @@ public class JogoResource {
     @POST
     public Response cadastrar(@Valid CadastroJogoDto dto, @Context UriInfo uriInfo) throws SQLException {
         Jogo jogo = modelMapper.map(dto, Jogo.class);
+
+        jogo.setDesenvolvedora(new Desenvolvedora(dto.getIdDesenvolvedora()));
+
         jogoDao.cadastrar(jogo);
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
         builder.path(String.valueOf(jogo.getId())); //Constroi a URI para acessar o jogo cadastrado

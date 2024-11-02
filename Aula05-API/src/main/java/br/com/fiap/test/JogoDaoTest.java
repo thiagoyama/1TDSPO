@@ -24,7 +24,7 @@ public class JogoDaoTest {
             JogoDao dao = new JogoDao(conexao);
 
             // 1. Teste de Inserção
-            Jogo novoJogo = new Jogo(0, "FIFA 22", LocalDate.of(2022, 9, 27), Classificacao.LIVRE);
+            Jogo novoJogo = new Jogo(0, "FIFA 22", LocalDate.of(2022, 9, 27), Classificacao.LIVRE, null);
             dao.cadastrar(novoJogo);
             System.out.println("Jogo cadastrado com sucesso!");
 

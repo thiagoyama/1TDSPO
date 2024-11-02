@@ -22,4 +22,6 @@ public class CadastroJogoDto {
 
     private Classificacao classificacao;
 
+    private Long idDesenvolvedora;
+
 }

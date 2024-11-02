@@ -2,6 +2,7 @@ package br.com.fiap.dao;
 
 import br.com.fiap.exception.IdNaoEncontradoException;
 import br.com.fiap.model.Classificacao;
+import br.com.fiap.model.Desenvolvedora;
 import br.com.fiap.model.Jogo;
 
 import java.sql.*;
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class JogoDao {
 
-    private static final String INSERT_SQL = "INSERT INTO T_JOGO (id_jogo, ds_nome, dt_lancamento, ds_classificacao) VALUES (SQ_T_JOGO.NEXTVAL, ?, ?, ?)";
+    private static final String INSERT_SQL = "INSERT INTO T_JOGO (id_jogo, ds_nome, dt_lancamento, ds_classificacao, id_desenvolvedora) VALUES (SQ_T_JOGO.NEXTVAL, ?, ?, ?, ?)";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM T_JOGO WHERE id_jogo = ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM T_JOGO";
-    private static final String UPDATE_SQL = "UPDATE T_JOGO SET ds_nome = ?, dt_lancamento = ?, ds_classificacao = ? WHERE id_jogo = ?";
+    private static final String UPDATE_SQL = "UPDATE T_JOGO SET ds_nome = ?, dt_lancamento = ?, ds_classificacao = ?, id_desenvolvedora = ? WHERE id_jogo = ?";
     private static final String DELETE_SQL = "DELETE FROM T_JOGO WHERE id_jogo = ?";
     private static final String SELECT_BY_NAME = "SELECT * FROM T_JOGO WHERE upper(ds_nome) like upper(?)";
 
@@ -87,6 +88,11 @@ public class JogoDao {
         } else {
             stmt.setNull(3, Types.VARCHAR);
         }
+        if (jogo.getDesenvolvedora() != null){
+            stmt.setLong(4, jogo.getDesenvolvedora().getId());
+        } else {
+            stmt.setNull(4, Types.INTEGER);
+        }
     }
 
     private Jogo parseJogo(ResultSet resultSet) throws SQLException {
@@ -96,8 +102,9 @@ public class JogoDao {
         String classificacaoStr = resultSet.getString("ds_classificacao");
         Classificacao classificacao = classificacaoStr != null ?
                 Classificacao.valueOf(classificacaoStr) : null;
+        Long idDev = resultSet.getLong("id_desenvolvedora");
 
-        return new Jogo(id, nome, dataLancamento, classificacao);
+        return new Jogo(id, nome, dataLancamento, classificacao, new Desenvolvedora(idDev));
     }
 }
 
