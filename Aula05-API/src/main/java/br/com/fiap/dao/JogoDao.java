@@ -17,7 +17,8 @@ public class JogoDao {
     private static final String SELECT_ALL_SQL = "SELECT * FROM T_JOGO";
     private static final String UPDATE_SQL = "UPDATE T_JOGO SET ds_nome = ?, dt_lancamento = ?, ds_classificacao = ?, id_desenvolvedora = ? WHERE id_jogo = ?";
     private static final String DELETE_SQL = "DELETE FROM T_JOGO WHERE id_jogo = ?";
-    private static final String SELECT_BY_NAME = "SELECT * FROM T_JOGO WHERE upper(ds_nome) like upper(?)";
+    private static final String SELECT_BY_NAME_SQL = "SELECT * FROM T_JOGO WHERE upper(ds_nome) like upper(?)";
+    private static final String SELECT_BY_ID_DESENVOLVEDORA_SQL = "SELECT * FROM T_JOGO WHERE id_desenvolvedora = ?";
 
     private Connection conexao;
 
@@ -25,8 +26,19 @@ public class JogoDao {
         this.conexao = conexao;
     }
 
+    public List<Jogo> listarPorIdDesenvolvedora(int id) throws SQLException {
+        PreparedStatement stm = conexao.prepareStatement(SELECT_BY_ID_DESENVOLVEDORA_SQL);
+        stm.setInt(1, id);
+        ResultSet resultSet = stm.executeQuery();
+        List<Jogo> lista = new ArrayList<>();
+        while (resultSet.next()){
+            lista.add(parseJogo(resultSet));
+        }
+        return lista;
+    }
+
     public List<Jogo> listarPorNome(String nome) throws SQLException {
-        PreparedStatement stm = conexao.prepareStatement(SELECT_BY_NAME);
+        PreparedStatement stm = conexao.prepareStatement(SELECT_BY_NAME_SQL);
         stm.setString(1, "%" + nome + "%");
         ResultSet resultSet = stm.executeQuery();
         List<Jogo> lista = new ArrayList<>();
