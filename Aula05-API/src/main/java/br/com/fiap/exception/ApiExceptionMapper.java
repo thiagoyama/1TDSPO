@@ -7,7 +7,7 @@ import jakarta.ws.rs.ext.Provider;
 
 //Mapear as exceptions do Java para Status Code do HTTP
 @Provider
-public class ApIExceptionMapper implements ExceptionMapper<Exception> {
+public class ApiExceptionMapper implements ExceptionMapper<Exception> {
 
     @Override
     public Response toResponse(Exception e) {

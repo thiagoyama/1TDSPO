@@ -46,7 +46,7 @@ public class DesenvolvedoraResource {
 
 
     @POST
-    public Response cadastrar(CadastroDesenvolvedoraDto dto, @Context UriInfo uriInfo) throws SQLException {
+    public Response cadastrar(@Valid CadastroDesenvolvedoraDto dto, @Context UriInfo uriInfo) throws SQLException {
         Desenvolvedora desenvolvedora = modelMapper.map(dto, Desenvolvedora.class);
         desenvolvedoraDao.cadastrar(desenvolvedora);
 
